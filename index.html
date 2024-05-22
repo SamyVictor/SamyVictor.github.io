@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    body {
+      font: bold 11pt Arial;
+      background-color: rgba(77, 45, 159, 0.884);
+      text-align: left;
+      display: grid;
+      color: rgb(255, 255, 255);
+    }
+
+    fieldset {
+      border-color: rgb(255, 255, 255);
+    }
+  </style>
+  <body>
+    <form action="" name="clientes_formulario" id="form_part2">
+      <fieldset>
+        <legend>Trabalhe conosco</legend>
+        <div>
+          <label for="nome">
+            Nome completo:
+            <input
+              type="text"
+              name="nomecompleto"
+              id="nome"
+              placeholder="Informe seu nome completo"
+            />
+          </label>
+      
+          <h5>VAGAS DISPONÍVEIS<h5>
+
+        </div>
+
+        <div>
+          <label for="id_Dev"
+            >Dev-Front-end JR
+            <input
+              type="radio"
+              name="radio"
+              value="Dev-Front-end JR"
+              id="id_Dev"
+            />
+          </label>
+        
+          <label for="id_Designer"
+            >Designer UI/UX
+            <input
+              type="radio"
+              name="radio"
+              value="Designer UI/UX"
+              id="id_Designer"
+            />
+          </label>
+        </div>
+
+        <h5>HABILIDADES<h5>
+
+    <div>
+   <label for="id_html">HTML5
+    <input
+    type="checkbox"
+    name="checkbox"
+    value="html"
+    id="id_html"
+    />
+   </label>
+
+   <label for="id_js">JavaScript
+    <input
+    type="checkbox"
+    name="checkbox"
+    value="js"
+    id="id_js"
+    />
+
+   <label for="id_css">CSS
+    <input
+    type="checkbox"
+    name="checkbox"
+    value="css"
+    id="id_css"
+    />
+      <div>
+      <label for="id_textarea">Cursos:
+        <textarea name="cursos_textarea" 
+        id="id_textarea"
+        cols="30" rows="4"></textarea>
+      </label>
+    </div>
+    <div>
+    </br>
+      <button type="submit">Enviar</button>
+    </div>
+     </fieldset>
+    </form>
+  </body>
+  <script type="module">
+
+    // Importação
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-analytics.js";
+    import {
+              getDatabase,
+              ref,
+              push,
+            } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyCa4Ogj9R4IFBhqNPA3zCKz8sYfZVnDkk0",
+
+authDomain: "foguinho-8a0dd.firebaseapp.com",
+
+databaseURL: "https://foguinho-8a0dd-default-rtdb.firebaseio.com",
+
+projectId: "foguinho-8a0dd",
+
+storageBucket: "foguinho-8a0dd.appspot.com",
+
+messagingSenderId: "598843594723",
+
+appId: "1:598843594723:web:3d6ac2f1be44237582f2d6",
+
+measurementId: "G-35EGN8MRHY"
+
+    };
+    
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const database = getDatabase();
+    
+    let form = document.getElementById("form_part2");
+    form.addEventListener("submit",(e)=>{
+    e.preventDefault();
+
+    let vetor = [];
+    
+    for(let i = 0; i < form.checkbox.length; i++){
+    if(form.checkbox[i].checked){
+    vetor[i] = form.checkbox[i].value;
+    console.log(form.checkbox[i].value)
+    }
+    }
+    
+    
+    alert(`
+    Nome: ${form.nomecompleto.value}
+    Vaga: ${form.radio.value}
+    Habilidades: ${vetor}
+    Cursos: ${form.cursos_textarea.value}
+    `);
+    
+    // Enviar os dados para o Firebase
+    const usersRef = ref(database, 'users');
+    push(usersRef, {
+    nome: form.nomecompleto.value,
+    radio: form.radio.value,
+    cursos: form.cursos_textarea.value,
+    checks: vetor
+    
+    }).then(() => {
+    alert('Dados enviados com sucesso!');
+    console.log("Dados enviados com sucesso!");
+    // Faça qualquer ação adicional aqui, como redirecionar o usuário ou exibir uma mensagem de sucesso.
+    }).catch((error) => {
+    console.error('Erro ao enviar dados:', error);
+    });
+    
+    })
+    
+    </script>
+</html> 
